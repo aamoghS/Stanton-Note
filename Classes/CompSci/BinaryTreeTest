@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Insertion Method</title>
+</head>
+<body>
+
+<h1>Insertion Method</h1>
+
+<pre><code>
+public Node insert(Node p, Node q) {
+    if (p == null) {
+        // If tree is empty, set q as the root
+        return q;
+    } else {
+        Node r = p;
+        Node s = null;
+        while (r != null) {
+            s = r;
+            if (q.getInfo() &lt; r.getInfo()) {
+                r = r.getLeft();
+                if (r == null)
+                    s.setLeft(q);
+            } else {
+                r = r.getRight();
+                if (r == null)
+                    s.setRight(q);
+            }
+        }
+    }
+    return p; // Return the root of the tree
+}
+</code></pre>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deletion Method</title>
+</head>
+<body>
+
+<h1>Deletion Method</h1>
+
+<pre><code>
+public void delete(int num) {
+    Node parent = null;
+    Node current = root;
+    boolean isLeftChild = false;
+
+    // Search for the node to delete
+    while (current != null && current.getInfo().getNumber() != num) {
+        parent = current;
+        if (num &lt; current.getInfo().getNumber()) {
+            current = current.getLeft();
+            isLeftChild = true;
+        } else {
+            current = current.getRight();
+            isLeftChild = false;
+        }
+    }
+
+    // If node is not found, return
+    if (current == null)
+        return;
+
+    // Case 1: Node to be deleted has no children or one child
+    if (current.getLeft() == null || current.getRight() == null) {
+        Node child = (current.getLeft() != null) ? current.getLeft() : current.getRight();
+        if (current == root)
+            root = child;
+        else if (isLeftChild)
+            parent.setLeft(child);
+        else
+            parent.setRight(child);
+    }
+    // Case 2: Node to be deleted has two children
+    else {
+        Node successor = getSuccessor(current);
+        if (current == root)
+            root = successor;
+        else if (isLeftChild)
+            parent.setLeft(successor);
+        else
+            parent.setRight(successor);
+        successor.setLeft(current.getLeft());
+    }
+}
+
+private Node getSuccessor(Node delNode) {
+    Node successorParent = delNode;
+    Node successor = delNode.getRight();
+    while (successor.getLeft() != null) {
+        successorParent = successor;
+        successor = successor.getLeft();
+    }
+    if (successor != delNode.getRight()) {
+        successorParent.setLeft(successor.getRight());
+        successor.setRight(delNode.getRight());
+    }
+    return successor;
+}
+</code></pre>
+
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Printing Out</title>
+</head>
+<body>
+
+<h1>Printing Out</h1>
+
+<pre><code>
+public void printPreorder() {
+    printPreorderRec(root);
+}
+
+private void printPreorderRec(Node root) {
+    if (root != null) {
+        System.out.print(root.getInfo() + " ");
+        printPreorderRec(root.getLeft());
+        printPreorderRec(root.getRight());
+    }
+}
+
+public void printPostorder() {
+    printPostorderRec(root);
+}
+
+private void printPostorderRec(Node root) {
+    if (root != null) {
+        printPostorderRec(root.getLeft());
+        printPostorderRec(root.getRight());
+        System.out.print(root.getInfo() + " ");
+    }
+}
+
+public void printInorder() {
+    printInorderRec(root);
+}
+
+private void printInorderRec(Node root) {
+    if (root != null) {
+        printInorderRec(root.getLeft());
+        System.out.print(root.getInfo() + " ");
+        printInorderRec(root.getRight());
+    }
+}
+</code></pre>
+
+</body>
+</html>
